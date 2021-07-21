@@ -1,36 +1,37 @@
+import { render } from '@testing-library/react';
 import React from 'react';
 import ReactDOM from 'react-dom';
-//import './index.css';
 
-const isLoading = false  //true 
-
-// 1，用 if--else 来写
-// const loadData = ()=> {
-//     if(isLoading){
-//         return <div>loading....</div>
+// 通过函数组件绑定事件：
+// function App(){
+//     // 事件处理程序
+//     function handleClick(){
+//         console.log('函数组件中的事件绑定，事件触发了');
 //     }
-//     return <div>数据加载完成，显示加载后的数据</div>
+//     return(
+//         <button onClick={handleClick}>点击一下</button>
+//     )
 // }
 
-// const title =(
-//     <h1>
-//         条件渲染：
-//         {loadData()}
-//     </h1>
-// )
-
-// 2, 还可以用三元表达式写：
-const loadData = () => {
-    return isLoading ? (<div>loading...</div>) : (<div>数据加载完成，显示加载后的数据</div>)
+class App extends React.Component {
+    //简化语法初始化state()
+    state = {
+        count: 0
+    }
+    render(){
+        return(
+            <div>
+               <h1>计数器： { this.state.count }</h1>
+               <button onClick={() => {
+                   this.setState({
+                       count:this.state.count + 1
+                   })
+               }}>+1</button>
+            </div>
+        )
+    }
 }
 
-const title = (
-    <h1>
-        条件渲染：
-        {loadData()}
-    </h1>
-)
 
-
-// 渲染react元素
-ReactDOM.render(title, document.getElementById('root'))
+// 渲染组件
+ReactDOM.render(<App />, document.getElementById('root'))
