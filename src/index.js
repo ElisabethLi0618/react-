@@ -2,88 +2,78 @@ import { render } from '@testing-library/react';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// 通过函数组件绑定事件：
-// function App(){
-//     // 事件处理程序
-//     function handleClick(){
-//         console.log('函数组件中的事件绑定，事件触发了');
-//     }
-//     return(
-//         <button onClick={handleClick}>点击一下</button>
-//     )
-// }
+import './index.css'
+
+
 
 class App extends React.Component {
-    //简化语法初始化state()
+    // 初始化状态
     state = {
-        txt: '',
-        content: '',
-        city: 'hz',
-        isChecked: false
+        comments: [
+            { id: 1, name: 'jack', content: '沙发！！！' },
+            { id: 2, name: 'rose', content: '板凳！！！' },
+            { id: 3, name: 'tom', content: '楼主好帅！！！' }
+        ]
     }
 
-    handleForm = e => {
-        //获取当前DOM 对象
-        const target = e.target
+    //渲染列表
+    renderList() {
+        // 可以用 if else  也可以用三元表达式 ？ ： 
+        if (this.state.comments.length === 0) {
+            return <div className="no-comment">暂无评论，快去评论把</div>
+        }
+        return (
+            <ul>
+                {this.state.comments.map(item => (
+                    <li key={item.id}>
+                        <h3>评论人：{item.name}</h3>
+                        <p>评论内容：{item.content}</p>
+                    </li>
+                ))}
+            </ul>
+        )
 
-        //根据类型获取值  先判断  ？是checkbox 就获取 checked  ：否就获取 value
-        const value = target.type ==='checkbox'
-        ? target.checked
-        : target.value
-
-        // 获取 name 
-        const name = target.name
-
-        this.setState({
-            [name]: value
-        })
-        this.setState({
-            txt: e.target.value
-        })
+        //     return this.state.comments.length === 0
+        //     ? (<div className="no-comment">暂无评论，快去评论把</div>)
+        //     : (
+        // <ul>
+        //     {this.state.comments.map(item => (
+        //         <li key={item.id}>
+        //         <h3>评论人：{item.name}</h3>
+        //         <p>评论内容：{item.content}</p>
+        //         </li>
+        //     ))}
+        // </ul>)
     }
-    // //处理副文本框的变化
-    // handleContent = e =>{
-    //     this.setState({
-    //         content: e.target.value
-    //     })
-    // }
-    // //处理下拉框的变化
-    // hanleCity = e =>{
-    //     this.setState({
-    //         city: e.target.value
-    //     })
-    // }
-    // //处理副选框的变化
-    // handleChecked = e =>{
-    //     this.setState({
-    //         isChecked: e.target.checked
-    //     })
-    // }
-    
-   
-    render(){
-        return(
-            <div>
-                {/* 文本框 */}
-               <input type="text" name="txt" value={this.state.txt} onChange={this.handleForm} />
-               <br/>
+    render() {
+        return (
+            <div className="app">
+                <div>
+                    {/* placeholder ：占位文字 */}
+                    <input className="user" type="text" placeholder="请输入评论人" />
+                    <br />
+                    <textarea className="content" cols="30" rows="10" placeholder="请输入评价内容" />
+                    <br />
+                    <button>发表评论</button>
+                </div>
 
-               {/* 副文本框 */}
-               <textarea  name="content" value={this.state.content} onChange={this.handleForm}></textarea>
-               <br/>
-               {/* 下拉框 */}
-               <select name="city" value={this.state.city} onChange={this.handleForm}>
-                   <option value="sh">上海</option>
-                   <option value="bj">北京</option>
-                   <option value="hz">杭州</option>
-               </select>
-               {/* 复选框 */}
-               <input type="checkbox" name="isChecked" checked={this.state.isChecked} onChange={this.handleForm}/>
+                {/* 通过条件渲染决定渲染什么内容 用三元表达式来判断  */}
+                {/* {this.state.comments.length === 0
+                ? (<div className="no-comment">暂无评论，快去评论把</div>)
+                : (
+            <ul>
+                {this.state.comments.map(item => (
+                    <li key={item.id}>
+                    <h3>评论人：{item.name}</h3>
+                    <p>评论内容：{item.content}</p>
+                    </li>
+                ))}
+            </ul>) } */}
+
+                {this.renderList()}
             </div>
         )
     }
 }
-
-
 // 渲染组件
 ReactDOM.render(<App />, document.getElementById('root'))
